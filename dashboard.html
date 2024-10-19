@@ -5,29 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake Review Monitoring Dashboard</title>
     <style>
+        /* General styles */
         body { 
             font-family: 'Arial', sans-serif; 
-            background-color: #f4f4f4; 
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            color: #333;
             margin: 0; 
-            padding: 20px; 
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
+        /* Container for the dashboard */
         .container { 
             max-width: 800px; 
-            margin: auto; 
             background-color: #fff; 
             padding: 30px; 
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
 
+        /* Headings and title */
         h2 { 
-            text-align: center; 
             color: #333; 
             margin-bottom: 20px;
-            font-size: 2rem;
+            font-size: 2.5rem;
         }
 
+        h3 { 
+            color: #555; 
+            margin-bottom: 15px;
+        }
+
+        /* Table styles */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -43,10 +56,12 @@
         th { 
             background-color: #4a90e2; 
             color: white; 
+            text-align: center;
         }
 
+        /* Button styling */
         button { 
-            padding: 8px 12px; 
+            padding: 10px 15px; 
             background-color: #333; 
             color: white; 
             border: none; 
@@ -58,6 +73,7 @@
             background-color: #555; 
         }
 
+        /* Login form styling */
         input[type="text"], input[type="password"] { 
             padding: 10px; 
             width: calc(50% - 24px); 
@@ -69,6 +85,14 @@
         input[type="text"]:focus, input[type="password"]:focus { 
             outline: none; 
             border-color: #4a90e2; 
+        }
+
+        /* Submit button style for login */
+        #login-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -96,11 +120,11 @@
         <h3>Login</h3>
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
+        <button id="login-btn" onclick="login()">Login</button>
     </div>
 
     <script>
-        // Your script logic here (for example, loadReviews function)
+        // Your script logic here
     </script>
 </body>
 </html>

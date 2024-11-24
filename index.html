@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Review Monitoring - Login</title>
+    <title>Login to Fake Review Monitoring System</title>
     <style>
         /* General styles */
-        body { 
-            font-family: 'Arial', sans-serif; 
+        body {
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #f06, #4a90e2);
             color: #fff;
             margin: 0;
@@ -19,32 +19,33 @@
         }
 
         /* Container to center content */
-        .container { 
-            max-width: 600px; 
-            text-align: center; 
-            background-color: rgba(255, 255, 255, 0.2); 
+        .container {
+            max-width: 600px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Headings and text styles */
-        h1 { 
+        h1 {
             color: #fff;
             font-size: 2.5rem;
             margin-bottom: 20px;
             font-weight: bold;
         }
-        p { 
+
+        p {
             font-size: 1.2rem;
             margin-bottom: 20px;
         }
 
         /* Input styling */
-        input { 
+        input {
             font-size: 1rem;
-            padding: 10px; 
-            width: 80%; 
+            padding: 10px;
+            width: 80%;
             margin-bottom: 15px;
             border: none;
             border-radius: 5px;
@@ -52,18 +53,25 @@
         }
 
         /* Button styling */
-        button { 
-            padding: 12px 25px; 
-            background-color: #333; 
+        button {
+            padding: 12px 25px;
+            background-color: #333;
             color: #fff;
-            border-radius: 5px; 
+            border-radius: 5px;
             font-size: 1.1rem;
             border: none;
             cursor: pointer;
         }
 
-        button:hover { 
-            background-color: #555; 
+        button:hover {
+            background-color: #555;
+        }
+
+        /* Error message styling */
+        #error-message {
+            color: red;
+            font-weight: bold;
+            display: none;
         }
     </style>
 </head>
@@ -71,48 +79,60 @@
     <div class="container">
         <h1>Login to Fake Review Monitoring System</h1>
         <p>Please enter your credentials to access the dashboard.</p>
-        
+
         <!-- Login Form -->
         <input type="text" id="username" placeholder="Enter your username" required>
         <input type="password" id="password" placeholder="Enter your password" required>
         <button onclick="login()">Login</button>
 
-        <p id="error-message" style="color: red; font-weight: bold; display: none;"></p>
+        <p id="error-message">Invalid credentials. Please try again.</p>
     </div>
 
     <script>
         function login() {
-            // Get user inputs
+            // Get username and password from the form
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            // Call the Flask backend
+            // Debug: Log the input values
+            console.log("Username Entered:", username);
+            console.log("Password Entered:", password);
+
+            // Sending the payload to the Flask backend
             fetch("http://127.0.0.1:5000/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             })
-            .then(response => {
-                if (!response.ok) {
-                    // If the response is not OK (e.g., 401), throw an error
-                    throw new Error("Invalid credentials");
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Redirect based on the user's role
-                if (data.role === "admin") {
-                    window.location.href = "admin-dashboard.html";
-                } else if (data.role === "reviewer") {
-                    window.location.href = "reviewer-dashboard.html";
-                } else {
-                    showErrorMessage("Unauthorized role.");
-                }
-            })
-            .catch(error => {
-                showErrorMessage("Invalid credentials. Please try again.");
-                console.error("Error:", error);
-            });
+                .then(response => {
+                    // Debug: Log the response status
+                    console.log("Response Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Invalid credentials");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Debug: Log the received data
+                    console.log("Response Data:", data);
+
+                    // Handle success based on the user's role
+                    if (data.role === "admin") {
+                        console.log("Redirecting to Admin Dashboard");
+                        window.location.href = "admin-dashboard.html";
+                    } else if (data.role === "reviewer") {
+                        console.log("Redirecting to Reviewer Dashboard");
+                        window.location.href = "reviewer-dashboard.html";
+                    } else {
+                        showErrorMessage("Unauthorized role.");
+                    }
+                })
+                .catch(error => {
+                    // Debug: Log the error
+                    console.error("Error:", error);
+                    showErrorMessage("Invalid credentials. Please try again.");
+                });
         }
 
         function showErrorMessage(message) {
